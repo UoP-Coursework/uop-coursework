@@ -1,9 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
-import Head from "next/head";
-import Link from "next/link";
 
 import { api } from "~/utils/api";
-import Layout from "./components/Layout";
+import Layout from "../components/Layout";
 import { Center } from "@mantine/core";
 
 export default function Home() {
@@ -12,12 +10,12 @@ export default function Home() {
       description=""
       emoji=""
     >
-      <>
+      <div className="w-full h-full p-8 flex flex-col justify-center items-center relative">
         <Center className="text-slate-300">
-            new site :D
+          new site :D
         </Center>
         <AuthShowcase />
-      </>
+      </div>
     </Layout>
   );
 }
