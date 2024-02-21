@@ -1,9 +1,8 @@
-import { Center, Stack, ThemeIcon, Tooltip, UnstyledButton, rem } from "@mantine/core";
+import { Center, Stack, Tooltip, UnstyledButton } from "@mantine/core";
 import { useState } from "react";
 import { 
     TbHome,
     TbGauge,
-    TbUser,
     TbSwitchHorizontal,
     Tb123,
     TbLogout,
@@ -26,7 +25,7 @@ interface NavbarLinkProps {
 function NavbarLink({icon: Icon, label, active, onClick }: NavbarLinkProps) {
     return (
         <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
-            <UnstyledButton onClick={onClick} className={classes.link} data-active={active || undefined}>
+            <UnstyledButton onClick={onClick} className={classes.link} data-active={active ?? undefined}>
                 <Icon />
             </UnstyledButton>
         </Tooltip>
@@ -60,7 +59,7 @@ export default function NavbarMinimal() {
 
     const handleOnClick = (index: number, slug: string) => {
         setActive(index);
-        router.push(slug);
+        void router.push(slug);
     }
 
 

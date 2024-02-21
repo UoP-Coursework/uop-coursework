@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { ReactElement } from "react";
-import NavBar from "./Nav";
+import type { ReactElement } from "react";
+import _NavBar from "./Nav";
 import NavbarMinimal from "./NavbarMini";
 
 export default function Layout({
