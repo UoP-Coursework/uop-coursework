@@ -18,8 +18,8 @@ export default function NavBar({
     path: string;
 }) {
     const router = useRouter();
-    const [mounted, setMounted] = useState(false);
-    const [tooltipVisibility, setTooltipVisibility] = useState(Array(NavItems.length).fill(false));
+    const [_mounted, setMounted] = useState(false);
+    const [tooltipVisibility, setTooltipVisibility] = useState(Array<boolean>(NavItems.length).fill(false));
 
     useEffect(() => {
         setMounted(true);
