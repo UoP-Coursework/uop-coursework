@@ -14,7 +14,7 @@ export default function Home() {
         <Center className="text-slate-300">
           new site :D
         </Center>
-        <AuthShowcase />
+        {/* <AuthShowcase /> */}
       </div>
     </Layout>
   );
