@@ -25,7 +25,7 @@ interface NavbarLinkProps {
 function NavbarLink({icon: Icon, label, active, onClick }: NavbarLinkProps) {
     return (
         <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
-            <UnstyledButton onClick={onClick} className={classes.link} data-active={active ?? undefined}>
+            <UnstyledButton onClick={onClick} className={classes.link} data-active={active ? active : undefined}>
                 <Icon />
             </UnstyledButton>
         </Tooltip>
@@ -72,7 +72,6 @@ export default function NavbarMinimal() {
         />
     ));
 
-    console.log('session data is', sessionData)
     return (
         <nav className="flex flex-col w-20 h-full p-4 border-r-1.5">
             <Center>
