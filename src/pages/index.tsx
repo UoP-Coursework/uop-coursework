@@ -1,45 +1,17 @@
-// import { signIn, signOut, useSession } from "next-auth/react";
-
-// import { api } from "~/utils/api";
 import Layout from "../components/Layout";
-import { Center } from "@mantine/core";
 
 export default function Home() {
   return (
-    <Layout
-      description=""
-      emoji=""
-    >
-      <div className="w-full h-full p-8 flex flex-col justify-center items-center relative">
-        <Center className="text-slate-300">
-          new site :D
-        </Center>
-        {/* <AuthShowcase /> */}
+    <Layout description="" emoji="">
+      <div className="m-0 h-screen w-screen p-0">
+        <h1 className="pt-10 text-center text-4xl font-bold leading-tight tracking-tight text-slate-300 md:text-5xl">
+          <span>Find your closest </span>
+          <span className="bg-gradient-to-r from-yellow-600 via-orange-400 to-orange-500 bg-clip-text text-transparent">
+            Recycling Plant
+          </span>
+          <span> with us</span>
+        </h1>
       </div>
     </Layout>
   );
 }
-
-// function AuthShowcase() {
-//   const { data: sessionData } = useSession();
-
-//   const { data: secretMessage } = api.post.getSecretMessage.useQuery(
-//     undefined, // no input
-//     { enabled: sessionData?.user !== undefined }
-//   );
-
-//   return (
-//     <div className="flex flex-col items-center justify-center gap-4">
-//       <p className="text-center text-2xl text-white">
-//         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-//         {secretMessage && <span> - {secretMessage}</span>}
-//       </p>
-//       <button
-//         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-//         onClick={sessionData ? () => void signOut() : () => void signIn()}
-//       >
-//         {sessionData ? "Sign out" : "Sign in"}
-//       </button>
-//     </div>
-//   );
-// }
