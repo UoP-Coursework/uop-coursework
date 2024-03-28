@@ -13,13 +13,21 @@ import classes from "../styles/navbarmin.module.css";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { Session } from "next-auth";
+import React from "react";
 
 interface NavbarLinkProps {
-  icon: IconType;
+  icon: IconType | JSX.Element;
   label: string;
   active?: boolean;
   slug?: string;
   onClick?(): void;
+}
+
+const isIconType = (x: any): x is IconType => !React.isValidElement(x);
+
+function genUserIcon(session: Session) {
+  return <Image src={session.user.image || "no-user.png"} alt="no-user" height={128} width={128} className="rounded-md w-8 h-8"/>
 }
 
 function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
@@ -30,7 +38,13 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
         className={classes.link}
         data-active={active ? active : undefined}
       >
-        <Icon />
+        {
+          isIconType(Icon)
+          ?
+          <Icon/>
+          :
+          Icon
+        }
       </UnstyledButton>
     </Tooltip>
   );
@@ -73,6 +87,8 @@ export default function NavbarMinimal() {
     />
   ));
 
+  console.log("sessiondata:", sessionData)
+
   return (
     <nav className="border-r-1.5 flex h-full w-20 flex-col p-4">
       <Center>
@@ -85,15 +101,21 @@ export default function NavbarMinimal() {
         </Stack>
       </div>
       <Stack justify="center" gap={0}>
-        <NavbarLink icon={TbSwitchHorizontal} label="Change Account" />
-        {sessionData == undefined ? (
-          <NavbarLink icon={TbLogin} label="Login" onClick={() => signIn()} />
-        ) : (
-          <NavbarLink
-            icon={TbLogout}
-            label="Logout"
-            onClick={() => signOut()}
+        {sessionData == null ? (
+          <NavbarLink 
+            icon={TbLogin} 
+            label="Login" 
+            onClick={() => signIn()} 
           />
+        ) : (
+          <>
+            <NavbarLink icon={genUserIcon(sessionData)} label="Change Account" />
+            <NavbarLink
+              icon={TbLogout}
+              label="Logout"
+              onClick={() => signOut()}
+            />
+          </>
         )}
       </Stack>
     </nav>
