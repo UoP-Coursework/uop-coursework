@@ -1,56 +1,49 @@
 import { z } from "zod";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
+export const userRouter = createTRPCRouter({
+  getProfileInfo: protectedProcedure.query(({ ctx }) => {
+    return ctx.db.user.findUnique({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        username: true,
+        carbon_offset: true,
+        carbon_footprint: true,
+      },
+    });
+  }),
 
-export const postRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
+  addProfileInfo: protectedProcedure
+    .input(
+      z.object({
+        username: z.string().max(20),
+        address: z.string().max(40),
+        address2: z.string().max(40),
+        town_city: z.string().max(40),
+        postcode: z.string().max(15),
+        country: z.string().max(60),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      return ctx.db.user.update({
+        data: {
+          id: ctx.session.user.id,
+          username: input.username,
+          address: input.address,
+          address2: input.address2,
+          town_city: input.town_city,
+          postcode: input.postcode,
+          country: input.country,
+        },
+        where: {
+          id: ctx.session.user.id,
+        },
+      });
     }),
-
-    getProfileInfo: protectedProcedure.query(({ ctx }) => {
-        return ctx.db.User.findUnique({
-            where: { 
-                id: ctx.session.user.id 
-            },
-            select: {
-                username: true, carbon_offset: true, carbon_footprint: true
-            }
-        })
-    }),
-
-    addProfileInfo: protectedProcedure
-        .input(z.object({ 
-            username: z.string().max(20), 
-            address: z.string().max(40),
-            address2: z.string().max(40),
-            town_city: z.string().max(40),
-            postcode: z.string().max(15),
-            country: z.string().max(60)
-        }))
-        .mutation(async ({ ctx, input }) => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-
-            return ctx.db.User.update({
-                data: {
-                    id: ctx.session.user.id,
-                    username: input.username,
-                    address: input.address,
-                    address2: input.address2,
-                    town_city: input.town_city,
-                    postcode: input.postcode,
-                    country: input.country
-                }
-                
-            })
-        })
 
   // create: protectedProcedure
   //   .input(z.object({ name: z.string().min(1) }))
@@ -72,8 +65,4 @@ export const postRouter = createTRPCRouter({
   //     where: { createdBy: { id: ctx.session.user.id } },
   //   });
   // }),
-
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
 });
