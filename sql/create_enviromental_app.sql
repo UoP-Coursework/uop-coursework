@@ -1,19 +1,12 @@
 CREATE DATABASE env;
 
-CREATE TABLE "Country"(
-
-	country_id SERIAL PRIMARY KEY,
-	name VARCHAR(60) NOT NULL
-
-);
-
 
 CREATE TABLE "User"(
 
 	id TEXT PRIMARY KEY,
 	name TEXT NOT NULL,
 	username VARCHAR(20) UNIQUE NOT NULL,
-	country_id INT NOT NULL REFERENCES "Country"(country_id),
+	country VARCHAR(60),
 	email TEXT UNIQUE NOT NULL,
 	emailVerified DATE,
 	carbon_offset INT DEFAULT 0,

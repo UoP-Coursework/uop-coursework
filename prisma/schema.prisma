@@ -45,7 +45,7 @@ model User {
   id               String    @id @default(cuid())
   name             String
   username         String?   @unique @db.VarChar(20)
-  country_id       Int?
+  country          String    @db.VarChar(60)
   email            String    @unique
   emailVerified    DateTime?
   carbon_offset    Int?
@@ -88,7 +88,7 @@ model Vehicle {
   brand_id       Int
   type_id        Int
   fuel_id        Int
-  country_id     Int
+  country        String   @db.VarChar(60)
   model          String   @db.VarChar(20)
   model_year     DateTime
   ulez_compliant Boolean
@@ -98,7 +98,7 @@ model Vehicle {
   type    Vehicle_Type  @relation("type", fields: [type_id], references: [type_id], onDelete: Cascade)
   fuel    Vehicle_Fuel  @relation("fuel", fields: [fuel_id], references: [fuel_id], onDelete: Cascade)
   brand   Vehicle_Brand @relation("brand", fields: [brand_id], references: [brand_id], onDelete: Cascade)
-  country Country       @relation("country", fields: [country_id], references: [country_id], onDelete: Cascade)
+ 
 }
 
 model User_Vehicle {
@@ -132,9 +132,4 @@ model Vehicle_Fuel {
   fuel Vehicle[] @relation("fuel")
 }
 
-model Country {
-  country_id Int    @id @default(autoincrement())
-  name       String @db.VarChar(60)
 
-  country Vehicle[] @relation("country")
-}
