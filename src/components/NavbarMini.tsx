@@ -13,7 +13,7 @@ import classes from "../styles/navbarmin.module.css";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import React from "react";
 
 interface NavbarLinkProps {
@@ -24,10 +24,10 @@ interface NavbarLinkProps {
   onClick?(): void;
 }
 
-const isIconType = (x: any): x is IconType => !React.isValidElement(x);
+const isIconType = (x: unknown): x is IconType => !React.isValidElement(x);
 
 function genUserIcon(session: Session) {
-  return <Image src={session.user.image || "no-user.png"} alt="no-user" height={128} width={128} className="rounded-md w-8 h-8"/>
+  return <Image src={session.user.image ?? "no-user.png"} alt="no-user" height={128} width={128} className="rounded-md w-8 h-8"/>
 }
 
 function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
