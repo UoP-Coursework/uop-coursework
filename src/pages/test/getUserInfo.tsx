@@ -1,10 +1,7 @@
-import { useSession } from "next-auth/react";
 import Layout from "~/components/Layout";
 import { api } from "~/utils/api";
 
-const testPage = () => {
-  const { data: sessionData } = useSession();
-
+const TestPage = () => {
   const { data: userProfileInfo } = api.user.getProfileInfo.useQuery();
 
   return (
@@ -30,4 +27,4 @@ const testPage = () => {
   )
 }
 
-export default testPage
+export default TestPage

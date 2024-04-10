@@ -1,10 +1,8 @@
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import Layout from "~/components/Layout";
 import { api } from "~/utils/api";
 
-const testPage = () => {
-  const { data: sessionData } = useSession();
+const TestPage = () => {
   const { mutate } = api.user.addProfileInfo.useMutation();
   const [username, setusername] = useState("");
   const [address, setaddress] = useState("");
@@ -78,4 +76,4 @@ const testPage = () => {
   );
 };
 
-export default testPage;
+export default TestPage;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Layout from "~/components/Layout";
 import { api } from "~/utils/api";
 
-const testPage = () => {
+const TestPage = () => {
   const { mutate } = api.user.addProfileUsername.useMutation();
 
   const [input, setInput] = useState("");
@@ -30,4 +30,4 @@ const testPage = () => {
   );
 };
 
-export default testPage;
+export default TestPage;
