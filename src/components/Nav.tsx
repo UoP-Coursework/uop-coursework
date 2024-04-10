@@ -124,7 +124,7 @@ const NavBar = ({ path }: { path: string }) => {
             >
               <div className="p-2">
                 <Image
-                  src={SessionData!.user.image ?? "no-user.png"}
+                  src={SessionData.user.image ?? "no-user.png"}
                   alt="no-user"
                   height={128}
                   width={128}
