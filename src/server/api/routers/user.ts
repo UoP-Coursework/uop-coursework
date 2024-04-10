@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
   getProfileInfo: protectedProcedure.query(({ ctx }) => {
@@ -31,7 +31,6 @@ export const userRouter = createTRPCRouter({
 
       return ctx.db.user.update({
         data: {
-          id: ctx.session.user.id,
           username: input.username,
           address: input.address,
           address2: input.address2,
@@ -44,6 +43,58 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
+
+
+    addProfileUsername: protectedProcedure
+    .input(
+      z.object({
+        username: z.string().max(20),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      return ctx.db.user.update({
+        data: {
+          username: input.username,
+
+        },
+        where: {
+          id: ctx.session.user.id,
+        },
+      });
+    }),
+
+    addUserVehicle: protectedProcedure
+        .input(
+            z.object({
+                vehicle_id: z.number()
+            }),
+        )
+        .mutation(async ({ ctx, input }) => {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            return ctx.db.user_vehicle.create({
+                data: {
+                    owner_id: ctx.session.user.id,
+                    vehicle_id: input.vehicle_id
+                }
+            });
+        }),
+
+    getLeaderboardStats: publicProcedure.query(({ ctx }) => {
+
+        return ctx.db.user.findMany({
+            select: {
+                username: true,
+                carbon_offset: true,
+                carbon_footprint: true
+            },
+            take: 50
+        })
+    }),
+
+
 
   // create: protectedProcedure
   //   .input(z.object({ name: z.string().min(1) }))
