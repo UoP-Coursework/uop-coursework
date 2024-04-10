@@ -7,24 +7,16 @@ const TestPage = () => {
   return (
     <Layout description="" emoji="">
       <div className="m-0 h-screen w-screen p-0">
-        {
-          userProfileInfo ?
-          (
-            <div>
-              <span>{userProfileInfo.username}</span>
-              <span>{userProfileInfo.carbon_footprint}</span>
-              <span>{userProfileInfo.carbon_offset}</span>
-            </div>
-          ): 
-          (
-            <span>
-              No Info Available
-            </span>
-          )
-        }
+        <div className="flex min-h-screen flex-row items-center justify-center text-slate-700 dark:text-slate-300">
+          {userProfileInfo ? (
+            <pre className="">{JSON.stringify(userProfileInfo, null, 2)}</pre>
+          ) : (
+            <span>No Info Available</span>
+          )}
+        </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default TestPage
+export default TestPage;

@@ -11,11 +11,6 @@ export const userRouter = createTRPCRouter({
       where: {
         id: ctx.session.user.id,
       },
-      select: {
-        username: true,
-        carbon_offset: true,
-        carbon_footprint: true,
-      },
     });
   }),
 
