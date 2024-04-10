@@ -3,8 +3,8 @@ import { useState } from "react";
 import {
   TbHome,
   TbGauge,
-  TbSwitchHorizontal,
   Tb123,
+  TbAbacus,
   TbLogout,
   TbLogin,
 } from "react-icons/tb";
@@ -57,6 +57,11 @@ const navData = [
     slug: "/",
   },
   {
+    icon: TbAbacus,
+    label: "test",
+    slug: "/test",
+  },
+  {
     icon: TbGauge,
     label: "Dashboard",
     slug: "/dashboard",
@@ -64,7 +69,7 @@ const navData = [
   {
     icon: Tb123,
     label: "Leaderboard",
-    slug: "leaderboard",
+    slug: "/leaderboard",
   },
 ];
 
