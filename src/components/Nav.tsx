@@ -1,87 +1,159 @@
-import { FiHome } from "react-icons/fi";
+import { Center, Tooltip } from "@mantine/core";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import {
+  Tb123,
+  TbAbacus,
+  TbGauge,
+  TbHome,
+  TbLogin,
+  TbLogout,
+} from "react-icons/tb";
 
-const NavItems = [
+const NavbarData = [
   {
-    name: "Home",
+    icon: TbHome,
+    label: "Home",
     slug: "/",
-    icon: FiHome,
+  },
+  {
+    icon: TbAbacus,
+    label: "test",
+    slug: "/test",
+  },
+  {
+    icon: TbGauge,
+    label: "Dashboard",
+    slug: "/dashboard",
+  },
+  {
+    icon: Tb123,
+    label: "Leaderboard",
+    slug: "/leaderboard",
   },
 ];
 
-export default function NavBar({ path }: { path: string }) {
+const NavBar = ({ path }: { path: string }) => {
   const router = useRouter();
-  const [_mounted, setMounted] = useState(false);
-  const [tooltipVisibility, setTooltipVisibility] = useState(
-    Array<boolean>(NavItems.length).fill(false),
-  );
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const { data: SessionData } = useSession();
 
   return (
-    <div className="flex h-full min-h-full w-full flex-col items-center justify-start pt-6">
-      <div className="flex flex-col gap-4">
-        {NavItems.map((item, index) => {
-          return (
-            <div key={item.slug}>
-              {path === item.slug ? (
-                <button
-                  key={index}
-                  className="relative flex w-full items-center justify-center rounded bg-zinc-800 shadow duration-300 ease-in-out hover:scale-110 hover:bg-zinc-800 hover:shadow-xl focus:bg-zinc-800 dark:bg-zinc-700 dark:hover:bg-zinc-700 dark:focus:bg-zinc-700"
-                  onMouseLeave={() => {
-                    const temp = [...tooltipVisibility];
-                    temp[index] = false;
-                    setTooltipVisibility(temp);
-                  }}
-                  onMouseEnter={() => {
-                    const temp = [...tooltipVisibility];
-                    temp[index] = true;
-                    setTooltipVisibility(temp);
-                  }}
-                  onClick={() => router.push(item.slug)}
-                >
-                  <div className="p-2">
-                    <item.icon size="1rem" className="text-zinc-100" />
-                  </div>
-                  {tooltipVisibility[index] && (
-                    <span className="absolute left-10 min-w-full rounded bg-zinc-800 p-[0.62rem] text-[0.75rem] leading-none text-zinc-200 shadow-xl dark:bg-zinc-700">
-                      {item.name}
-                    </span>
-                  )}
-                </button>
-              ) : (
-                <button
-                  key={index}
-                  className="relative flex w-full items-center justify-center rounded bg-zinc-700 shadow duration-300 ease-in-out hover:scale-110 hover:bg-zinc-800 hover:shadow-xl focus:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:focus:bg-zinc-700"
-                  onMouseLeave={() => {
-                    const temp = [...tooltipVisibility];
-                    temp[index] = false;
-                    setTooltipVisibility(temp);
-                  }}
-                  onMouseEnter={() => {
-                    const temp = [...tooltipVisibility];
-                    temp[index] = true;
-                    setTooltipVisibility(temp);
-                  }}
-                  onClick={() => router.push(item.slug)}
-                >
-                  <div className="p-2">
-                    <item.icon size="1rem" className="text-zinc-100" />
-                  </div>
-                  {tooltipVisibility[index] && (
-                    <span className="absolute left-10 rounded bg-zinc-800 p-[0.62rem] text-[0.75rem] leading-none text-zinc-200 shadow-xl dark:bg-zinc-700">
-                      {item.name}
-                    </span>
-                  )}
-                </button>
-              )}
-            </div>
-          );
-        })}
+    <div className="border-r-1.5 flex h-full w-20 flex-col p-4">
+      <Center>
+        <Image
+          src="/favicon.ico"
+          alt="favicon"
+          height={128}
+          width={128}
+          className="h-12 w-12"
+        />
+      </Center>
+
+      <div className="mt-8 flex h-full flex-1 flex-col items-center justify-start">
+        <div className="flex flex-col gap-4">
+          {NavbarData.map((item, index) => {
+            return (
+              <div key={item.slug}>
+                {path === item.slug ? (
+                  <Tooltip
+                    label={item.label}
+                    position="right"
+                    transitionProps={{ duration: 100 }}
+                  >
+                    <button
+                      key={index}
+                      className="relative flex h-12 w-12 items-center justify-center rounded-lg bg-sky-800 bg-opacity-10 shadow duration-300 ease-in-out hover:scale-110 hover:bg-sky-800 hover:shadow-xl focus:bg-sky-800 dark:bg-green-500 dark:bg-opacity-10 dark:hover:bg-sky-700 dark:focus:bg-sky-700"
+                    >
+                      <div className="p-2">
+                        <item.icon
+                          size="1.25rem"
+                          className="text-zinc-800 dark:text-zinc-100"
+                        />
+                      </div>
+                    </button>
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    label={item.label}
+                    position="right"
+                    transitionProps={{ duration: 100 }}
+                  >
+                    <button
+                      key={index}
+                      // className="relative flex h-12 w-12 items-center justify-center rounded-lg bg-sky-700 shadow duration-300 ease-in-out hover:scale-110 hover:bg-sky-800 hover:shadow-xl focus:bg-sky-800 dark:bg-sky-800 dark:hover:bg-sky-700 dark:focus:bg-sky-700"
+                      className="relative flex h-12 w-12 items-center justify-center rounded-lg shadow duration-300 ease-in-out hover:scale-110 hover:bg-sky-800 hover:shadow-xl focus:bg-sky-800 dark:hover:bg-sky-700 dark:focus:bg-sky-700"
+                      onClick={() => router.push(item.slug)}
+                    >
+                      <div className="p-2">
+                        <item.icon
+                          size="1.25rem"
+                          className="text-zinc-800 dark:text-zinc-100"
+                        />
+                      </div>
+                    </button>
+                  </Tooltip>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
+      {SessionData == null ? (
+        <Tooltip
+          label="Login"
+          position="right"
+          transitionProps={{ duration: 100 }}
+        >
+          <button className="relative flex h-12 w-12 items-center justify-center rounded-lg shadow duration-300 ease-in-out hover:scale-110 hover:bg-sky-800 hover:shadow-xl focus:bg-sky-800 dark:hover:bg-sky-700 dark:focus:bg-sky-700">
+            <div className="p-2">
+              <TbLogin className="text-zinc-100" />
+            </div>
+          </button>
+        </Tooltip>
+      ) : (
+        <>
+          <Tooltip
+            label="Logout"
+            position="right"
+            transitionProps={{ duration: 100 }}
+          >
+            <button
+              className="relative flex h-12 w-12 items-center justify-center rounded-lg duration-300 ease-in-out hover:scale-110"
+              onClick={() => signIn()}
+            >
+              <div className="p-2">
+                <Image
+                  src={SessionData!.user.image ?? "no-user.png"}
+                  alt="no-user"
+                  height={128}
+                  width={128}
+                  className="h-10 min-w-10 rounded-md"
+                />
+              </div>
+            </button>
+          </Tooltip>
+          <Tooltip
+            label="Logout"
+            position="right"
+            transitionProps={{ duration: 100 }}
+          >
+            <button
+              className="relative flex h-12 w-12 items-center justify-center rounded-lg shadow duration-300 ease-in-out hover:scale-110 hover:bg-sky-800 hover:shadow-xl focus:bg-sky-800 dark:hover:bg-sky-700 dark:focus:bg-sky-700"
+              onClick={() => signOut()}
+            >
+              <div className="p-2">
+                <TbLogout
+                  size="1.25rem"
+                  className="text-zinc-800 dark:text-zinc-100"
+                />
+              </div>
+            </button>
+          </Tooltip>
+        </>
+      )}
     </div>
   );
-}
+};
+
+export default NavBar;

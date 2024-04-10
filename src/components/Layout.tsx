@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import type { ReactElement } from "react";
-import NavbarMinimal from "./NavbarMini";
+import NavBar from "./Nav";
 
 export default function Layout({
   children,
@@ -48,7 +48,7 @@ export default function Layout({
       <main className="font-clash max-h-auto relative flex min-h-screen flex-col items-center overflow-x-hidden bg-zinc-100 selection:bg-zinc-200/30 dark:bg-zinc-900">
         <div className="flex h-full w-full md:w-2/3 lg:w-[90%]">
           <div className="fixed left-0 z-50 hidden h-full w-[6%] md:block lg:block">
-            <NavbarMinimal />
+            <NavBar path={currentRoute} />
           </div>
           {children}
         </div>
