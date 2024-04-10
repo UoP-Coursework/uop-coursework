@@ -1,5 +1,4 @@
 import Layout from "~/components/Layout";
-import { api } from "~/utils/api";
 
 const testPage = () => {
     <Layout description="" emoji="">
