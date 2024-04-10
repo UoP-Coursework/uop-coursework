@@ -44,6 +44,27 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
+
+    addProfileUsername: protectedProcedure
+    .input(
+      z.object({
+        username: z.string().max(20),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      return ctx.db.user.update({
+        data: {
+          username: input.username,
+
+        },
+        where: {
+          id: ctx.session.user.id,
+        },
+      });
+    }),
+
     addUserVehicle: protectedProcedure
         .input(
             z.object({
