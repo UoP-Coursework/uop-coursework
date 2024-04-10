@@ -105,7 +105,10 @@ const NavBar = ({ path }: { path: string }) => {
           position="right"
           transitionProps={{ duration: 100 }}
         >
-          <button className="relative flex h-12 w-12 items-center justify-center rounded-lg shadow duration-300 ease-in-out hover:scale-110 hover:bg-sky-800 hover:shadow-xl focus:bg-sky-800 dark:hover:bg-sky-700 dark:focus:bg-sky-700">
+          <button
+            className="relative flex h-12 w-12 items-center justify-center rounded-lg shadow duration-300 ease-in-out hover:scale-110 hover:bg-sky-800 hover:shadow-xl focus:bg-sky-800 dark:hover:bg-sky-700 dark:focus:bg-sky-700"
+            onClick={() => signIn()}
+          >
             <div className="p-2">
               <TbLogin className="text-zinc-100" />
             </div>
@@ -120,7 +123,9 @@ const NavBar = ({ path }: { path: string }) => {
           >
             <button
               className="relative flex h-12 w-12 items-center justify-center rounded-lg duration-300 ease-in-out hover:scale-110"
-              onClick={() => signIn()}
+              onClick={() =>
+                console.log("this should show the user modal (WIP)")
+              }
             >
               <div className="p-2">
                 <Image
