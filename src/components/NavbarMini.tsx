@@ -1,20 +1,21 @@
 import { Center, Stack, Tooltip, UnstyledButton } from "@mantine/core";
-import { useState } from "react";
-import {
-  TbHome,
-  TbGauge,
-  Tb123,
-  TbAbacus,
-  TbLogout,
-  TbLogin,
-} from "react-icons/tb";
-import type { IconType } from "react-icons/lib";
-import classes from "../styles/navbarmin.module.css";
-import { useRouter } from "next/router";
+import { useDisclosure } from "@mantine/hooks";
+import type { Session } from "next-auth";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import type { Session } from "next-auth";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import type { IconType } from "react-icons/lib";
+import {
+  Tb123,
+  TbAbacus,
+  TbGauge,
+  TbHome,
+  TbLogin,
+  TbLogout,
+} from "react-icons/tb";
+import UserModal from "~/lib/userModal";
+import classes from "../styles/navbarmin.module.css";
 
 interface NavbarLinkProps {
   icon: IconType | JSX.Element;
@@ -24,10 +25,24 @@ interface NavbarLinkProps {
   onClick?(): void;
 }
 
+interface UserButtonProps {
+  icon: JSX.Element;
+  label: string;
+  active?: boolean;
+}
+
 const isIconType = (x: unknown): x is IconType => !React.isValidElement(x);
 
 function genUserIcon(session: Session) {
-  return <Image src={session.user.image ?? "no-user.png"} alt="no-user" height={128} width={128} className="rounded-md w-8 h-8"/>
+  return (
+    <Image
+      src={session.user.image ?? "no-user.png"}
+      alt="no-user"
+      height={128}
+      width={128}
+      className="h-8 w-8 rounded-md"
+    />
+  );
 }
 
 function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
@@ -38,15 +53,28 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
         className={classes.link}
         data-active={active ? active : undefined}
       >
-        {
-          isIconType(Icon)
-          ?
-          <Icon/>
-          :
-          Icon
-        }
+        {isIconType(Icon) ? <Icon /> : Icon}
       </UnstyledButton>
     </Tooltip>
+  );
+}
+
+function UserButton({ icon: Icon, label, active }: UserButtonProps) {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    <>
+      <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
+        <UnstyledButton
+          onClick={open}
+          className={classes.link}
+          data-active={active ? active : undefined}
+        >
+          {isIconType(Icon) ? <Icon /> : Icon}
+        </UnstyledButton>
+      </Tooltip>
+      <UserModal opened={opened} onClose={close} />
+    </>
   );
 }
 
@@ -92,7 +120,7 @@ export default function NavbarMinimal() {
     />
   ));
 
-  console.log("sessiondata:", sessionData)
+  console.log("sessiondata:", sessionData);
 
   return (
     <nav className="border-r-1.5 flex h-full w-20 flex-col p-4">
@@ -107,14 +135,13 @@ export default function NavbarMinimal() {
       </div>
       <Stack justify="center" gap={0}>
         {sessionData == null ? (
-          <NavbarLink 
-            icon={TbLogin} 
-            label="Login" 
-            onClick={() => signIn()} 
-          />
+          <NavbarLink icon={TbLogin} label="Login" onClick={() => signIn()} />
         ) : (
           <>
-            <NavbarLink icon={genUserIcon(sessionData)} label="Change Account" />
+            <UserButton
+              icon={genUserIcon(sessionData)}
+              label="Change Account"
+            />
             <NavbarLink
               icon={TbLogout}
               label="Logout"

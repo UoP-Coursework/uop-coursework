@@ -2,7 +2,7 @@ import Layout from "../components/Layout";
 
 export default function Home() {
   return (
-    <Layout description="" emoji="">
+    <Layout description="" emoji="🦊">
       <div className="m-0 h-screen w-screen p-0">
         <h1 className="pt-10 text-center text-4xl font-bold leading-tight tracking-tight text-slate-300 md:text-5xl">
           <span>Find your closest </span>

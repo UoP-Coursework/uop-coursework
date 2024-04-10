@@ -13,51 +13,58 @@ const TestPage = () => {
 
   return (
     <Layout description="" emoji="">
-      <div className="m-0 h-screen w-screen p-0">
+      <div className="m-0 h-screen w-screen p-0 text-center">
         <input
             placeholder="type a username"
-            className="grow bg-transparent outline-none"
+            className="grow bg-transparent outline-none text-white"
             type="text"
             value={username}
             onChange={(e) => setusername(e.target.value)}
         />
+        <br/>
         <input
             placeholder="type ur address"
-            className="grow bg-transparent outline-none"
+            className="grow bg-transparent outline-none text-white"
             type="text"
             value={address}
             onChange={(e) => setaddress(e.target.value)}
         />
+        <br/>
         <input
             placeholder="type ur address x2"
-            className="grow bg-transparent outline-none"
+            className="grow bg-transparent outline-none text-white"
             type="text"
             value={address2}
             onChange={(e) => setaddress2(e.target.value)}
         />
+        <br/>
         <input
-            placeholder="type ur contry"
-            className="grow bg-transparent outline-none"
+            placeholder="type ur country"
+            className="grow bg-transparent outline-none text-white"
             type="text"
             value={country}
             onChange={(e) => setcountry(e.target.value)}
         />
+        <br/>
         <input
             placeholder="type ur postcode"
-            className="grow bg-transparent outline-none"
+            className="grow bg-transparent outline-none text-white"
             type="text"
             value={postcode}
             onChange={(e) => setpostcode(e.target.value)}
         />
+        <br/>
         <input
             placeholder="type ur town/city"
-            className="grow bg-transparent outline-none"
+            className="grow bg-transparent outline-none text-white"
             type="text"
             value={town_city}
             onChange={(e) => settown_city(e.target.value)}
         />
+        <br/>
 
         <button
+          className="text-white"
           onClick={() =>
             mutate({
               username: username,
