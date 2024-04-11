@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { Tb123, TbAbacus, TbGauge, TbHome } from "react-icons/tb";
 import LoginLogout from "./LoginLogout";
-import UserSettings from "./userSettings";
+import UserModal from "./userModal";
 
 const NavbarData = [
   {
@@ -101,7 +101,7 @@ const NavBar = ({ path }: { path: string }) => {
       >
         <p>Modal Content</p>
       </UserModal> */}
-      <UserSettings opened={opened} onClose={close} />
+      <UserModal opened={opened} onClose={close} />
     </div>
   );
 };

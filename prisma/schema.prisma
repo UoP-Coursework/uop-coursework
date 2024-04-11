@@ -44,8 +44,9 @@ model Session {
 model User {
   id               String    @id @default(cuid())
   name             String
+  role             String?
   username         String?   @unique @db.VarChar(20)
-  country          String    @db.VarChar(60) @default("")
+  country          String    @default("") @db.VarChar(60)
   email            String    @unique
   emailVerified    DateTime?
   carbon_offset    Int?
@@ -95,10 +96,9 @@ model Vehicle {
 
   ownedvehicles User_Vehicle[] @relation("ownedvehicles")
 
-  type    Vehicle_Type  @relation("type", fields: [type_id], references: [type_id], onDelete: Cascade)
-  fuel    Vehicle_Fuel  @relation("fuel", fields: [fuel_id], references: [fuel_id], onDelete: Cascade)
-  brand   Vehicle_Brand @relation("brand", fields: [brand_id], references: [brand_id], onDelete: Cascade)
- 
+  type  Vehicle_Type  @relation("type", fields: [type_id], references: [type_id], onDelete: Cascade)
+  fuel  Vehicle_Fuel  @relation("fuel", fields: [fuel_id], references: [fuel_id], onDelete: Cascade)
+  brand Vehicle_Brand @relation("brand", fields: [brand_id], references: [brand_id], onDelete: Cascade)
 }
 
 model User_Vehicle {
@@ -131,5 +131,3 @@ model Vehicle_Fuel {
 
   fuel Vehicle[] @relation("fuel")
 }
-
-
