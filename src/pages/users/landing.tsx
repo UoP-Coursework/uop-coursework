@@ -2,7 +2,6 @@ import { Button, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { api } from "~/utils/api";
 
 const LandingPage = () => {
@@ -20,14 +19,7 @@ const LandingPage = () => {
       country: "",
     },
   });
-  console.log(isSuccess);
   if (status === "loading") return null;
-
-  useEffect(() => {
-    if (isSuccess) {
-      router.push("/");
-    }
-  }, [isSuccess]);
 
   return (
     <main className="font-clash max-h-auto relative flex min-h-screen flex-col items-center overflow-x-hidden bg-zinc-100 selection:bg-zinc-200/30 dark:bg-zinc-900">
@@ -40,7 +32,9 @@ const LandingPage = () => {
           <form
             onSubmit={form.onSubmit((values) => {
               mutate({ ...values });
-              console.log(isSuccess);
+              if (isSuccess) {
+                void router.push("/");
+              }
             })}
             className="text-slate-700 dark:text-slate-300"
           >

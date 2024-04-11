@@ -1,32 +1,32 @@
 import { Modal } from "@mantine/core";
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 
-const UserModal = ({
-  children,
-  opened,
-  onClose,
-  className,
-}: {
-  children: ReactElement;
-  opened: boolean;
-  onClose(): void;
-  className: string;
-}) => {
-  return (
-    <>
-      <Modal.Root opened={opened} onClose={onClose} className="">
-        <Modal.Overlay />
-        <Modal.Content className="[&>section]:bg-inherit">
-          <Modal.Header className={className}>
-            <Modal.Title className={className}>Modal Title</Modal.Title>
-            <Modal.CloseButton className={className} />
-          </Modal.Header>
-          <Modal.Body className={className}>{children}</Modal.Body>
-        </Modal.Content>
-      </Modal.Root>
-    </>
-  );
-};
+// const UserModal = ({
+//   children,
+//   opened,
+//   onClose,
+//   className,
+// }: {
+//   children: ReactElement;
+//   opened: boolean;
+//   onClose(): void;
+//   className: string;
+// }) => {
+//   return (
+//     <>
+//       <Modal.Root opened={opened} onClose={onClose} className="">
+//         <Modal.Overlay />
+//         <Modal.Content className="[&>section]:bg-inherit">
+//           <Modal.Header className={className}>
+//             <Modal.Title className={className}>Modal Title</Modal.Title>
+//             <Modal.CloseButton className={className} />
+//           </Modal.Header>
+//           <Modal.Body className={className}>{children}</Modal.Body>
+//         </Modal.Content>
+//       </Modal.Root>
+//     </>
+//   );
+// };
 
 const CustomModal = ({
   children,

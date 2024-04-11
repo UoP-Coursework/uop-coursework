@@ -1,5 +1,5 @@
 import { Tooltip } from "@mantine/core";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import { TbLogin, TbLogout } from "react-icons/tb";
