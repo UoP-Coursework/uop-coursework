@@ -5,6 +5,7 @@ import { type AppType } from "next/app";
 
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import NextNProgress from "nextjs-progressbar";
 
 import { api } from "~/utils/api";
 
@@ -17,6 +18,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <MantineProvider>
+        <NextNProgress
+          color={"#a1a1aa"}
+          options={{ showSpinner: false, easing: "ease" }}
+        />
         <Component {...pageProps} />
         <Analytics />
         <SpeedInsights />
