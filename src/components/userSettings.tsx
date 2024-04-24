@@ -5,7 +5,8 @@ import { api } from "~/utils/api";
 const redact = (data: string) => {
   if (data.includes("@")) {
     const [first, last] = data.split("@", 2);
-    return `${"*".repeat(first?.length!)}@${last}`;
+    if (!first) return data;
+    return `${"*".repeat(first.length)}@${last}`;
   }
 };
 

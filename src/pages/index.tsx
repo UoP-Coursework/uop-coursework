@@ -1,4 +1,8 @@
 import Layout from "~/components/Layout";
+import Geolocate from "~/components/geolocate";
+
+// import React from "react";
+// React.useLayoutEffect = React.useEffect;
 
 export default function Home() {
   return (
@@ -11,6 +15,7 @@ export default function Home() {
           </span>
           <span> with us</span>
         </h1>
+        <Geolocate />
       </div>
     </Layout>
   );

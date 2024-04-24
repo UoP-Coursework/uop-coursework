@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { type GetServerSidePropsContext } from "next";
 import {
