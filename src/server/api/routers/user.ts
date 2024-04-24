@@ -41,6 +41,86 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
+  addOffsetFootprint: protectedProcedure
+    .input(
+      z.object({
+        travelType: z.string().max(20),
+        miles: z.number(),
+
+
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+
+      let calculation;
+      let carbonType;
+      let carbonNumber;
+
+      switch (input.travelType) {
+
+        case "bicycle": {
+
+          calculation = (100 * input.miles)
+          carbonType = "offset"
+          break;
+        }
+
+        case "electric": {
+
+          calculation = (50 * input.miles)
+          carbonType = "offset"
+          break;
+        }
+
+        case "walking": {
+
+          calculation = (100 * input.miles)
+          carbonType = "offset"
+        }
+
+        case "conventional": {
+
+          calculation = (100 * input.miles)
+          carbonType = "footprint"
+        }
+      }
+
+      if (carbonType == "offset") {
+
+        return ctx.db.user.update({
+
+          data: {
+            carbon_offset: calculation,
+          },
+          where: {
+            id: ctx.session.user.id,
+          },
+        });
+      }
+
+      else {
+        return ctx.db.user.update({
+
+          data: {
+            carbon_footprint: calculation,
+          },
+          where: {
+            id: ctx.session.user.id,
+          },
+        });
+      }
+
+      return ctx.db.user.update({
+
+        data: {
+          carbonNumber: calculation,
+        },
+        where: {
+          id: ctx.session.user.id,
+        },
+      });
+    }),
+
   addProfileUsername: protectedProcedure
     .input(
       z.object({
