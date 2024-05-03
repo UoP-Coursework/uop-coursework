@@ -36,23 +36,21 @@ const Geolocate = () => {
 
     placesService.nearbySearch(
       {
-        keyword: "Recyling Plant",
+        keyword: "Recyling",
         location: {
           lat: coords.latitude,
           lng: coords.longitude,
         },
+        radius: 50000,
       },
       (result, status) => {
         console.log(status);
         console.log(result);
       },
     );
-  }, [placesService, location]);
+  }, [placesService, coords]);
 
   return (
-    // <div className="m-0 h-screen w-screen p-0 text-center text-black">
-    //   <pre>{JSON.stringify({ a: "v" })}</pre>
-    // </div>
     <div className="control-panel">
       <h3>Basic Map</h3>
       <p>
@@ -82,10 +80,16 @@ const MapComponent = () => {
   return (
     <APIProvider apiKey={env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
       <Map
+        className="h-dvh"
         defaultCenter={{ lat: 43.65, lng: -79.38 }}
-        zoom={5}
+        defaultZoom={3}
         gestureHandling={"greedy"}
         fullscreenControl={false}
+        disableDefaultUI={true}
+        style={{
+          height: "auto",
+          width: "auto",
+        }}
       >
         <Geolocate />
       </Map>

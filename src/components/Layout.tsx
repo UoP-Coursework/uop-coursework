@@ -45,13 +45,11 @@ export default function Layout({
         />
         <meta property="twitter:description" content={description} />
       </Head>
-      <main className="font-clash max-h-auto relative flex min-h-screen flex-col items-center overflow-x-hidden bg-zinc-100 selection:bg-zinc-200/30 dark:bg-zinc-900">
-        <div className="flex h-full w-full md:w-2/3 lg:w-[90%]">
-          <div className="fixed left-0 z-50 hidden h-full w-[6%] md:block lg:block">
-            <NavBar path={currentRoute} />
-          </div>
-          {children}
+      <main className="max-h-auto relative flex min-h-screen flex-row items-center justify-between overflow-x-hidden bg-zinc-100 selection:bg-zinc-200/30 dark:bg-zinc-900">
+        <div className="sticky left-0 top-0 z-50 flex h-screen w-[6%]">
+          <NavBar path={currentRoute} />
         </div>
+        <div className="flex h-screen w-full">{children}</div>
       </main>
     </div>
   );

@@ -3,7 +3,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { Tb123, TbAbacus, TbGauge, TbHome } from "react-icons/tb";
+import { TbAbacus, TbBook2, TbGauge, TbHome, TbNumber123 } from "react-icons/tb";
 import LoginLogout from "./LoginLogout";
 import UserModal from "./userModal";
 
@@ -14,19 +14,24 @@ const NavbarData = [
     slug: "/",
   },
   {
-    icon: TbAbacus,
-    label: "test",
-    slug: "/test",
-  },
-  {
     icon: TbGauge,
     label: "Dashboard",
     slug: "/dashboard",
   },
   {
-    icon: Tb123,
+    icon: TbNumber123,
     label: "Leaderboard",
     slug: "/leaderboard",
+  },
+  {
+    icon: TbBook2,
+    label: "Frequently Asked Questions",
+    slug: "/faq",
+  },
+  {
+    icon: TbAbacus,
+    label: "Testing Pages",
+    slug: "/test",
   },
 ];
 
@@ -34,8 +39,9 @@ const NavBar = ({ path }: { path: string }) => {
   const router = useRouter();
   const { data: SessionData, status } = useSession();
   const [opened, { open, close }] = useDisclosure();
+
   return (
-    <div className="border-r-1.5 flex h-full w-20 flex-col p-4">
+    <div className="border-r-1.5 flex h-full w-full flex-col p-4">
       <Center>
         <Image
           src="/favicon.ico"
