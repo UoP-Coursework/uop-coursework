@@ -32,7 +32,7 @@ test("user addProfileInfo", async () => {
   expect(example).contain(input);
 });
 
-test("user addProfileInfo", async () => {
+test("user addProfileUsername", async () => {
   const ctx = createInnerTRPCContext({
     session: {
       user: {
@@ -52,11 +52,10 @@ test("user addProfileInfo", async () => {
   };
 
   const example = await caller.user.addProfileUsername(input);
-  console.log(example);
   expect(example).contain(input);
 });
 
-test("user addProfileInfo", async () => {
+test("user getLeaderboardStats", async () => {
   const ctx = createInnerTRPCContext({
     session: {
       user: {
@@ -80,6 +79,6 @@ test("user addProfileInfo", async () => {
     username: "test input",
   };
 
-  const example = await caller.user.addProfileInfo(input);
+  const example = await caller.user.getLeaderboardStats(input);
   expect(example).contain(input);
 });
