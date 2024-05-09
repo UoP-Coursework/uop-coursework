@@ -71,6 +71,23 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
+  setPreferredTravelType: protectedProcedure
+    .input(
+      z.object({
+        preferred_travel_type: z.string().max(20),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.user.update({
+        data: {
+          preferred_travel_type: input.preferred_travel_type,
+        },
+        where: {
+          id: ctx.session.user.id,
+        },
+      });
+    }),
+
   addProfileInfo: protectedProcedure
     .input(
       z.object({
@@ -80,6 +97,7 @@ export const userRouter = createTRPCRouter({
         town_city: z.string().max(40),
         postcode: z.string().max(15),
         country: z.string().max(60),
+        preferred_travel_type: z.string().max(20),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -91,6 +109,7 @@ export const userRouter = createTRPCRouter({
           town_city: input.town_city,
           postcode: input.postcode,
           country: input.country,
+          preferred_travel_type: input.preferred_travel_type,
         },
         where: {
           id: ctx.session.user.id,
@@ -110,26 +129,28 @@ export const userRouter = createTRPCRouter({
       let carbonType;
 
       switch (input.travelType) {
-        case "bicycle": {
+        case "Bicycling": {
           calculation = 100 * input.miles;
           carbonType = "offset";
           break;
         }
 
-        case "electric": {
-          calculation = 50 * input.miles;
+        case "Walking": {
+          calculation = 100 * input.miles;
           carbonType = "offset";
           break;
         }
 
-        case "walking": {
-          calculation = 100 * input.miles;
-          carbonType = "offset";
-        }
-
-        case "conventional": {
+        case "Driving": {
           calculation = 100 * input.miles;
           carbonType = "footprint";
+          break;
+        }
+
+        case "Transit": {
+          calculation = 50 * input.miles;
+          carbonType = "footprint";
+          break;
         }
       }
 
@@ -178,6 +199,17 @@ export const userRouter = createTRPCRouter({
       },
       select: {
         username: true,
+      },
+    });
+  }),
+
+  getProfilePreferredTravelType: protectedProcedure.query(({ ctx }) => {
+    return ctx.db.user.findUnique({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        preferred_travel_type: true,
       },
     });
   }),

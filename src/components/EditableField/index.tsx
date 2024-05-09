@@ -1,4 +1,4 @@
-import { TextInput } from "@mantine/core";
+import { Select, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { useState, type ReactNode } from "react";
@@ -26,7 +26,7 @@ const EditableField = ({
         {child ? child : <p>{value}</p>}
       </div>
       <button
-        className="h-10 w-16 rounded-lg bg-zinc-600 p-1"
+        className="h-10 w-16 rounded-lg bg-zinc-200 p-1 dark:bg-zinc-600"
         onClick={() => open()}
       >
         Edit
@@ -40,7 +40,60 @@ const EditableField = ({
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
-          <div>
+          <div className="flex justify-end pt-4">
+            <button
+              className="rounded-md bg-mantine-blue p-2 text-white"
+              onClick={() => {
+                mutate(inputValue);
+                close();
+              }}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </CustomModal>
+    </div>
+  );
+};
+
+const EditableSelect = ({
+  label,
+  value,
+  child,
+  mutate,
+}: {
+  label: string;
+  value: string | null;
+  child?: ReactNode;
+  mutate: (data: string) => void;
+}) => {
+  const [opened, { open, close }] = useDisclosure();
+  const [inputValue, setInputValue] = useState<string>(value ?? "");
+
+  return (
+    <div className="flex flex-row items-center justify-between gap-4">
+      <div>
+        <p className="font-bold">{label}:</p>
+        {child ? child : <p>{value}</p>}
+      </div>
+      <button
+        className="h-10 w-16 rounded-lg bg-zinc-200 p-1 dark:bg-zinc-600"
+        onClick={() => open()}
+      >
+        Edit
+      </button>
+
+      <CustomModal opened={opened} onClose={close} title="Edit">
+        <div>
+          <p className="font-bold">{label}:</p>
+          <Select
+            placeholder={label}
+            value={inputValue}
+            onChange={(e) => setInputValue(e!)}
+            data={["Bicycling", "Driving", "Transit", "Walking"]}
+          />
+          <div className="flex justify-end pt-4">
             <button
               className="rounded-md bg-mantine-blue p-2 text-white"
               onClick={() => {
@@ -106,7 +159,7 @@ const EditableAddress = ({
         </div>
       </div>
       <button
-        className="h-10 w-16 rounded-lg bg-zinc-600 p-1"
+        className="h-10 w-16 rounded-lg bg-zinc-200 p-1 dark:bg-zinc-600"
         onClick={() => open()}
       >
         Edit
@@ -162,4 +215,4 @@ const EditableAddress = ({
   );
 };
 
-export { EditableAddress, EditableField };
+export { EditableAddress, EditableField, EditableSelect };

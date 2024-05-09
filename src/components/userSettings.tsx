@@ -1,7 +1,11 @@
 import { Loader } from "@mantine/core";
 import { useState } from "react";
 import { api } from "~/utils/api";
-import { EditableAddress, EditableField } from "./EditableField";
+import {
+  EditableAddress,
+  EditableField,
+  EditableSelect,
+} from "./EditableField";
 
 const redact = (data: string) => {
   if (data.includes("@")) {
@@ -28,6 +32,12 @@ const UserSettings = () => {
       void refetch();
     },
   });
+  const { mutate: mutatePreferredTravelType } =
+    api.user.setPreferredTravelType.useMutation({
+      onSuccess: () => {
+        void refetch();
+      },
+    });
   const [emailVisible, setEmailVisible] = useState(false);
 
   if (isLoading) {
@@ -91,6 +101,13 @@ const UserSettings = () => {
             postcode: string;
           }) => {
             mutateAddress(data);
+          }}
+        />
+        <EditableSelect
+          label="Preferred Travel Type"
+          value={data.preferred_travel_type}
+          mutate={(data: string) => {
+            mutatePreferredTravelType({ preferred_travel_type: data });
           }}
         />
         <div>

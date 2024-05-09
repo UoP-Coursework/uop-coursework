@@ -1,4 +1,5 @@
-import { Button, Group, TextInput } from "@mantine/core";
+"use client";
+import { Button, Group, Select, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -18,6 +19,7 @@ const LandingPage = () => {
       town_city: "",
       postcode: "",
       country: "",
+      preferred_travel_type: "",
     },
     validate: zodResolver(
       z.object({
@@ -43,7 +45,6 @@ const LandingPage = () => {
           <form
             onSubmit={form.onSubmit((values) => {
               mutate({ ...values });
-              console.log(isSuccess);
               if (isSuccess) {
                 void router.push("/");
               }
@@ -88,6 +89,12 @@ const LandingPage = () => {
               label="Country"
               placeholder="Country"
               {...form.getInputProps("country")}
+            />
+            <Select
+              label="Preferred Travel Type"
+              placeholder="Preferred Travel Type"
+              data={["Bicycling", "Driving", "Transit", "Walking"]}
+              {...form.getInputProps("preferred_travel_type")}
             />
             <Group justify="flex-end" mt="md">
               <Button type="submit">Submit</Button>

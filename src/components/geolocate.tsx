@@ -1,5 +1,4 @@
-"use client";
-import { Loader } from "@mantine/core";
+import { Loader, Rating } from "@mantine/core";
 import {
   APIProvider,
   AdvancedMarker,
@@ -9,8 +8,10 @@ import {
   useMapsLibrary,
 } from "@vis.gl/react-google-maps";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { TbArrowBack } from "react-icons/tb";
 import { env } from "~/env";
+import { api } from "~/utils/api";
 import InfoMarker from "./Markers";
 
 const Markers = ({ coords }: { coords: GeolocationCoordinates }) => {
@@ -45,7 +46,6 @@ const Markers = ({ coords }: { coords: GeolocationCoordinates }) => {
       (result, _, nextPageToken) => {
         if (!result) return;
         setPlaces((prev) => [...(prev ?? []), ...result]);
-        console.log("placesService hasNextPage", nextPageToken?.hasNextPage);
         if (nextPageToken?.hasNextPage) {
           nextPageToken.nextPage();
         } else {
@@ -85,12 +85,23 @@ const MapSideBar = ({
   coords: GeolocationCoordinates;
 }) => {
   const map = useMap();
+  const {
+    data: preferredTravelType,
+    isStale,
+    refetch,
+  } = api.user.getProfilePreferredTravelType.useQuery();
 
+  const { mutate: mutateAddOffsetFootprint } =
+    api.user.addOffsetFootprint.useMutation();
+  const [isFolded, setIsFolded] = useState(false);
   const routesLibrary = useMapsLibrary("routes");
   const [directionsService, setDirectionsService] =
     useState<google.maps.DirectionsService>();
   const [directionsRenderer, setDirectionsRenderer] =
     useState<google.maps.DirectionsRenderer>();
+  const travelMode = useRef<google.maps.TravelMode>();
+  const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
+  const [place, setPlace] = useState<google.maps.places.PlaceResult>();
 
   useEffect(() => {
     if (!routesLibrary || !map) return;
@@ -100,43 +111,118 @@ const MapSideBar = ({
     );
   }, [routesLibrary, map]);
 
-  console.log(places);
+  useEffect(() => {
+    if (isStale) {
+      void refetch();
+    }
+  }, [isStale, refetch]);
+
+  useEffect(() => {
+    if (!preferredTravelType) return;
+
+    switch (preferredTravelType.preferred_travel_type) {
+      case "Bicycling": {
+        travelMode.current = google.maps.TravelMode.BICYCLING;
+        break;
+      }
+      case "Driving": {
+        travelMode.current = google.maps.TravelMode.DRIVING;
+        break;
+      }
+      case "Transit": {
+        travelMode.current = google.maps.TravelMode.TRANSIT;
+        break;
+      }
+      case "Walking": {
+        travelMode.current = google.maps.TravelMode.WALKING;
+        break;
+      }
+    }
+  }, [preferredTravelType]);
+
+  if (!preferredTravelType) {
+    return <></>;
+  }
 
   return (
-    <div className="absolute inset-y-0 bottom-0 right-0 flex w-4/12 flex-col gap-4 divide-y overflow-y-scroll bg-zinc-100 p-4 text-slate-700 dark:bg-zinc-900 dark:text-slate-300">
-      {places.map((value, index) => (
-        <div key={index}>
-          <p className="font-bold">{value.name}</p>
-          <p>{value.rating}</p>
-          <p>{value.vicinity}</p>
-          <div className="flex flex-row gap-4">
+    <>
+      {isFolded ? (
+        <div className="absolute inset-y-0 bottom-0 right-0 flex transform flex-col gap-4 divide-y overflow-y-scroll bg-zinc-100 p-4 text-slate-700 duration-100 data-[fold=false]:w-4/12 data-[fold=true]:w-[300px] dark:bg-zinc-900 dark:text-slate-300">
+          <div className="flex h-full w-full flex-col gap-4">
             <button
-              className="text-slate-700 dark:text-slate-300"
               onClick={() => {
-                directionsService!
-                  .route({
-                    origin: coords.latitude + "," + coords.longitude,
-                    destination:
-                      value.geometry!.location!.lat() +
-                      "," +
-                      value.geometry!.location!.lng(),
-                    travelMode: google.maps.TravelMode.DRIVING,
-                  })
-                  .then((result) => {
-                    console.log(result);
-                    directionsRenderer!.setDirections(result);
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
+                setIsFolded((prev) => !prev);
+              }}
+              className="flex flex-row items-center gap-2"
+            >
+              back
+              <TbArrowBack />
+            </button>
+            <p className="font-bold">{place?.name}</p>
+            <Rating value={place?.rating} fractions={2} readOnly />
+            <p>{place?.vicinity}</p>
+            <p>Distance: {routes[0]?.legs[0]?.distance?.text}</p>
+            <p>
+              Miles:{" "}
+              {(routes[0]!.legs[0]!.distance!.value / 1000 / 1.609).toFixed(2)}
+            </p>
+
+            <button
+              className="flex justify-self-end last:mt-auto"
+              onClick={() => {
+                mutateAddOffsetFootprint({
+                  travelType: preferredTravelType.preferred_travel_type!,
+                  miles: routes[0]!.legs[0]!.distance!.value / 1000 / 1.609,
+                });
               }}
             >
-              Directions
+              Choose Route
             </button>
           </div>
         </div>
-      ))}
-    </div>
+      ) : (
+        <div
+          className="absolute inset-y-0 bottom-0 right-0 flex transform flex-col gap-4 divide-y overflow-y-scroll bg-zinc-100 p-4 text-slate-700 duration-100 data-[fold=false]:w-4/12 data-[fold=true]:w-[300px] dark:bg-zinc-900 dark:text-slate-300"
+          data-fold={isFolded}
+        >
+          {places.map((value, index) => (
+            <div key={index}>
+              <p className="font-bold">{value.name}</p>
+              <Rating value={value.rating} fractions={2} readOnly />
+              <p>{value.vicinity}</p>
+              <div className="flex flex-row gap-4">
+                <button
+                  className="text-slate-700 dark:text-slate-300"
+                  onClick={() => {
+                    directionsService!
+                      .route({
+                        origin: coords.latitude + "," + coords.longitude,
+                        destination:
+                          value.geometry!.location!.lat() +
+                          "," +
+                          value.geometry!.location!.lng(),
+                        travelMode: travelMode.current!,
+                      })
+                      .then((result) => {
+                        console.log(result);
+                        setRoutes(result.routes);
+                        directionsRenderer!.setDirections(result);
+                        setIsFolded(true);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                    setPlace(value);
+                  }}
+                >
+                  Directions
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 

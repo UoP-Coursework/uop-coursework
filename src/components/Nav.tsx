@@ -56,7 +56,7 @@ const NavBar = ({ path }: { path: string }) => {
         className="h-12 w-12"
       />
 
-      <div className="mt-8  flex-1 flex-col items-center justify-start">
+      <div className="mt-8 flex-1">
         <div className="flex flex-col gap-4">
           {NavbarData.map((item, index) => {
             if (item.slug === "/test") {
