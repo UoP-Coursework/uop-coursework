@@ -53,46 +53,6 @@ const Markers = ({ coords }: { coords: GeolocationCoordinates }) => {
         }
       },
     );
-    // placesService.nearbySearch(
-    //   {
-    //     keyword: "recycling",
-    //     location: {
-    //       lat: coords.latitude,
-    //       lng: coords.longitude,
-    //     },
-    //     rankBy: google.maps.places.RankBy.DISTANCE,
-    //   },
-    //   (result, _, nextPageToken) => {
-    //     if (!result) return;
-    //     setPlaces((prev) => [...(prev ?? []), ...result]);
-    //     console.log("placesService hasNextPage", nextPageToken?.hasNextPage);
-    //     if (nextPageToken?.hasNextPage) {
-    //       nextPageToken.nextPage();
-    //     } else {
-    //       setIsLoading(false);
-    //     }
-    //   },
-    // );
-    // placesService.textSearch(
-    //   {
-    //     query: "recyling",
-    //     location: {
-    //       lat: coords.latitude,
-    //       lng: coords.longitude,
-    //     },
-    //     radius: 20000,
-    //   },
-    //   (result, status, nextPageToken) => {
-    //     if (!result) return;
-    //     setPlaces((prev) => [...(prev ?? []), ...result]);
-    //     console.log("placesService hasNextPage", nextPageToken?.hasNextPage);
-    //     if (nextPageToken?.hasNextPage) {
-    //       nextPageToken.nextPage();
-    //     } else {
-    //       setIsLoading(false);
-    //     }
-    //   },
-    // );
   }, [placesService, coords]);
 
   if (!places) {
@@ -112,22 +72,68 @@ const Markers = ({ coords }: { coords: GeolocationCoordinates }) => {
           content={value.name}
         />
       ))}
-      <MapSideBar places={places} />
+      <MapSideBar places={places} coords={coords} />
     </>
   );
 };
 
 const MapSideBar = ({
   places,
+  coords,
 }: {
   places: google.maps.places.PlaceResult[];
+  coords: GeolocationCoordinates;
 }) => {
+  const map = useMap();
+
+  const routesLibrary = useMapsLibrary("routes");
+  const [directionsService, setDirectionsService] =
+    useState<google.maps.DirectionsService>();
+  const [directionsRenderer, setDirectionsRenderer] =
+    useState<google.maps.DirectionsRenderer>();
+
+  useEffect(() => {
+    if (!routesLibrary || !map) return;
+    setDirectionsService(new routesLibrary.DirectionsService());
+    setDirectionsRenderer(
+      new routesLibrary.DirectionsRenderer({ map, suppressMarkers: true }),
+    );
+  }, [routesLibrary, map]);
+
   console.log(places);
+
   return (
-    <div className="absolute inset-y-0 bottom-0 right-0 flex w-[300px] flex-col gap-4 divide-y overflow-y-scroll bg-zinc-100 p-4 text-slate-700 dark:bg-zinc-900 dark:text-slate-300">
+    <div className="absolute inset-y-0 bottom-0 right-0 flex w-4/12 flex-col gap-4 divide-y overflow-y-scroll bg-zinc-100 p-4 text-slate-700 dark:bg-zinc-900 dark:text-slate-300">
       {places.map((value, index) => (
         <div key={index}>
-          <p>{value.name}</p>
+          <p className="font-bold">{value.name}</p>
+          <p>{value.rating}</p>
+          <p>{value.vicinity}</p>
+          <div className="flex flex-row gap-4">
+            <button
+              className="text-slate-700 dark:text-slate-300"
+              onClick={() => {
+                directionsService!
+                  .route({
+                    origin: coords.latitude + "," + coords.longitude,
+                    destination:
+                      value.geometry!.location!.lat() +
+                      "," +
+                      value.geometry!.location!.lng(),
+                    travelMode: google.maps.TravelMode.DRIVING,
+                  })
+                  .then((result) => {
+                    console.log(result);
+                    directionsRenderer!.setDirections(result);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }}
+            >
+              Directions
+            </button>
+          </div>
         </div>
       ))}
     </div>
