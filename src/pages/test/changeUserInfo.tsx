@@ -74,6 +74,7 @@ const TestPage = () => {
                 country: country,
                 postcode: postcode,
                 town_city: town_city,
+                preferred_travel_type: "Bicycling",
               })
             }
           >
