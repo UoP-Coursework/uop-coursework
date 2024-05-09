@@ -5,9 +5,13 @@ import { api } from "~/utils/api";
 
 export default function Home() {
   const { data: SessionData } = useSession();
-  const { data } = api.user.getProfileUsename.useQuery();
+  const { data, isLoading } = api.user.getProfileUsename.useQuery();
 
   const userLoggedIn = () => {
+    if (isLoading) {
+      return <></>;
+    }
+
     if (SessionData?.user) {
       return (
         <>

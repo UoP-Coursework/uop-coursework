@@ -31,14 +31,13 @@ const LoginLogout = ({
       ) : (
         <>
           <Tooltip
-            label="Logout"
+            label="Open User Settings"
             position="right"
             transitionProps={{ duration: 100 }}
           >
             <button
               className="relative flex h-12 w-12 items-center justify-center rounded-lg duration-300 ease-in-out hover:scale-110"
               onClick={() => {
-                console.log("this should show the user modal (WIP)");
                 open();
               }}
             >

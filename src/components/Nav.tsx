@@ -65,7 +65,7 @@ const NavBar = ({ path }: { path: string }) => {
               }
             }
             return (
-              <>
+              <div key={item.slug}>
                 {path === item.slug ? (
                   <Tooltip
                     label={item.label}
@@ -98,7 +98,7 @@ const NavBar = ({ path }: { path: string }) => {
                     </button>
                   </Tooltip>
                 )}
-              </>
+              </div>
             );
           })}
         </div>

@@ -15,7 +15,6 @@ const InfoMarker = ({
   const [infoWindowOpen, setInfoWindowOpen] = useState(false);
   const [markerRef, marker] = useAdvancedMarkerRef();
 
-  console.log(position);
   return (
     <>
       <AdvancedMarker

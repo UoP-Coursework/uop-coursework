@@ -14,6 +14,63 @@ export const userRouter = createTRPCRouter({
     });
   }),
 
+  setProfileUsername: protectedProcedure
+    .input(
+      z.object({
+        username: z.string().max(20),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.user.update({
+        data: {
+          username: input.username,
+        },
+        where: {
+          id: ctx.session.user.id,
+        },
+      });
+    }),
+
+  setProfileEmail: protectedProcedure
+    .input(
+      z.object({
+        email: z.string().email(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.user.update({
+        data: {
+          email: input.email,
+        },
+        where: {
+          id: ctx.session.user.id,
+        },
+      });
+    }),
+
+  setProfileAddress: protectedProcedure
+    .input(
+      z.object({
+        address: z.string().max(40),
+        address2: z.string().max(40),
+        town_city: z.string().max(40),
+        postcode: z.string().max(15),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.user.update({
+        data: {
+          address: input.address,
+          address2: input.address2,
+          town_city: input.town_city,
+          postcode: input.postcode,
+        },
+        where: {
+          id: ctx.session.user.id,
+        },
+      });
+    }),
+
   addProfileInfo: protectedProcedure
     .input(
       z.object({
@@ -118,6 +175,9 @@ export const userRouter = createTRPCRouter({
     return ctx.db.user.findUnique({
       where: {
         id: ctx.session.user.id,
+      },
+      select: {
+        username: true,
       },
     });
   }),

@@ -48,5 +48,5 @@ const CustomModal = ({
   );
 };
 
-export default UserModal;
 export { CustomModal };
+export default UserModal;

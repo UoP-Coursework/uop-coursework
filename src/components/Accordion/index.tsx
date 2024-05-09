@@ -11,7 +11,7 @@ const Accordian = ({
   const [isOpen, setOpen] = useState<boolean>(false);
 
   return (
-    <div className="flex w-4/6 flex-col rounded-lg bg-zinc-700 p-2 text-slate-700 dark:text-slate-300">
+    <div className="flex w-4/6 flex-col rounded-lg bg-zinc-300 p-2 text-slate-700 dark:bg-zinc-700 dark:text-slate-300">
       <h1
         className="flex w-full cursor-pointer flex-row items-center justify-between gap-4 p-2 text-center text-3xl font-bold"
         onClick={() => setOpen(!isOpen)}
