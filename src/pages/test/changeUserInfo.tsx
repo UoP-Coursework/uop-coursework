@@ -12,9 +12,9 @@ const TestPage = () => {
   const [town_city, settown_city] = useState("");
 
   return (
-    <Layout description="" emoji="">
+    <Layout description="changeUserInfo">
       <div className="flex min-h-screen flex-row items-center justify-center text-slate-700 dark:text-slate-300">
-        <div className="m-0 h-screen w-screen p-0 text-center">
+        <div className="m-0 h-screen w-full p-0 text-center">
           <input
             placeholder="type a username"
             className="grow bg-transparent text-white outline-none"

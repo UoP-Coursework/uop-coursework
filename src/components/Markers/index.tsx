@@ -12,25 +12,25 @@ const InfoMarker = ({
   position: google.maps.LatLng;
   content: ReactNode;
 }) => {
-  const [infoWindowOpen, setInfoWindowOpen] = useState(true);
+  const [infoWindowOpen, setInfoWindowOpen] = useState(false);
   const [markerRef, marker] = useAdvancedMarkerRef();
 
+  console.log(position);
   return (
     <>
       <AdvancedMarker
         ref={markerRef}
         position={position}
-        onClick={() => setInfoWindowOpen(true)}
-      >
-        {infoWindowOpen && (
-          <InfoWindow
-            anchor={marker}
-            onCloseClick={() => setInfoWindowOpen(false)}
-          >
-            {content}
-          </InfoWindow>
-        )}
-      </AdvancedMarker>
+        onClick={() => setInfoWindowOpen((prev) => !prev)}
+      />
+      {infoWindowOpen && (
+        <InfoWindow
+          anchor={marker}
+          onCloseClick={() => setInfoWindowOpen(false)}
+        >
+          {content}
+        </InfoWindow>
+      )}
     </>
   );
 };

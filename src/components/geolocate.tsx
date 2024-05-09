@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { env } from "~/env";
 import InfoMarker from "./Markers";
 
-const Geolocate = () => {
+const Markers = () => {
   const map = useMap();
   const placesLib = useMapsLibrary("places");
   const [placesService, setPlacesService] =
@@ -22,7 +22,6 @@ const Geolocate = () => {
 
   useEffect(() => {
     if ("geolocation" in navigator) {
-      // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
       navigator.geolocation.getCurrentPosition(({ coords }) => {
         setLocation(coords);
         console.log(coords);
@@ -52,17 +51,9 @@ const Geolocate = () => {
         setPlaces(result);
         console.log(status);
         console.log(result);
-        console.log(result?.[0]?.geometry?.location?.toString());
       },
     );
   }, [placesService, coords]);
-
-  // useEffect(() => {
-  //   if (!places) return;
-  //   places.map((value, index) => (
-  //     <Marker position={value.geometry?.location} key={index} />
-  //   ));
-  // }, [places]);
 
   if (!places) {
     return <></>;
@@ -71,42 +62,14 @@ const Geolocate = () => {
   return (
     <>
       {places.map((value, index) => (
-        <>
-          <InfoMarker
-            position={value.geometry!.location!}
-            key={index}
-            content={value.name}
-          />
-          {/* <Marker position={value.geometry!.location!} key={index} /> */}
-        </>
+        <InfoMarker
+          position={value.geometry!.location!}
+          key={index}
+          content={value.name}
+        />
       ))}
     </>
   );
-
-  // return (
-  //   <div className="control-panel">
-  //     <h3>Basic Map</h3>
-  //     <p>
-  //       The simplest example possible, just rendering a google map with some
-  //       settings adjusted.
-  //     </p>
-  //     <div className="links">
-  //       <a
-  //         href="https://codesandbox.io/s/github/visgl/react-google-maps/tree/main/examples/basic-map"
-  //         target="_new"
-  //       >
-  //         Try on CodeSandbox ↗
-  //       </a>
-
-  //       <a
-  //         href="https://github.com/visgl/react-google-maps/tree/main/examples/basic-map"
-  //         target="_new"
-  //       >
-  //         View Code ↗
-  //       </a>
-  //     </div>
-  //   </div>
-  // );
 };
 
 const MapComponent = () => {
@@ -125,7 +88,7 @@ const MapComponent = () => {
           width: "auto",
         }}
       >
-        <Geolocate />
+        <Markers />
       </Map>
     </APIProvider>
   );

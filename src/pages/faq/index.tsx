@@ -3,8 +3,8 @@ import Layout from "~/components/Layout";
 
 const FaqPage = () => {
   return (
-    <Layout description="" emoji="">
-      <div className="m-0 flex h-screen w-screen flex-col items-center">
+    <Layout description="FAQ">
+      <div className="m-0 flex h-screen w-full flex-col items-center">
         <h1 className="py-10 text-center text-6xl font-bold leading-tight tracking-tight text-slate-700 dark:text-slate-300">
           Frequently Asked Questions
         </h1>

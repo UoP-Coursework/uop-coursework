@@ -8,8 +8,8 @@ const TestPage = () => {
   const [input, setInput] = useState("");
 
   return (
-    <Layout description="" emoji="">
-      <div className="m-0 h-screen w-screen p-0">
+    <Layout description="changeUsername">
+      <div className="m-0 h-screen w-full p-0">
         <input
           placeholder="type a username"
           className="grow bg-transparent outline-none"

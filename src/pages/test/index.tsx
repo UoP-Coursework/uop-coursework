@@ -5,9 +5,9 @@ const TestPage = () => {
   const router = useRouter();
 
   return (
-    <Layout description="" emoji="">
+    <Layout description="Test">
       <div className="flex min-h-screen flex-row items-center justify-center text-slate-700 dark:text-slate-300">
-        <div className="m-0 h-screen w-screen p-0 text-center text-white">
+        <div className="m-0 h-screen w-full p-0 text-center text-white">
           <button onClick={() => router.push("test/changeUserInfo")}>
             changeUserInfo
           </button>

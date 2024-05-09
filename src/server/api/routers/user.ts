@@ -51,7 +51,6 @@ export const userRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       let calculation;
       let carbonType;
-      let carbonNumber;
 
       switch (input.travelType) {
         case "bicycle": {
@@ -114,6 +113,14 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
+
+  getProfileUsename: protectedProcedure.query(({ ctx }) => {
+    return ctx.db.user.findUnique({
+      where: {
+        id: ctx.session.user.id,
+      },
+    });
+  }),
 
   addUserVehicle: protectedProcedure
     .input(
