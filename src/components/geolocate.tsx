@@ -1,4 +1,5 @@
 import { Loader, Rating } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
   APIProvider,
   AdvancedMarker,
@@ -10,9 +11,11 @@ import {
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { TbArrowBack } from "react-icons/tb";
+import QRCode from "react-qr-code";
 import { env } from "~/env";
 import { api } from "~/utils/api";
 import InfoMarker from "./Markers";
+import { CustomModal } from "./userModal";
 
 const Markers = ({ coords }: { coords: GeolocationCoordinates }) => {
   const map = useMap();
@@ -102,6 +105,8 @@ const MapSideBar = ({
   const travelMode = useRef<google.maps.TravelMode>();
   const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
   const [place, setPlace] = useState<google.maps.places.PlaceResult>();
+  const [opened, { open, close }] = useDisclosure();
+  const [hasClicked, setHasClicked] = useState(false);
 
   useEffect(() => {
     if (!routesLibrary || !map) return;
@@ -146,6 +151,17 @@ const MapSideBar = ({
 
   return (
     <>
+      <CustomModal opened={opened} onClose={close} title="Scan QR Code">
+        <div className="flex flex-col items-center justify-center gap-4">
+          <QRCode
+            value={
+              "https://www.google.com/maps/dir/?api=1&" +
+              `origin=${coords.latitude},${coords.longitude}&destination=${place?.geometry!.location!.lat()},${place?.geometry!.location!.lng()}&travelmode=${travelMode.current!}&destination_place_id=${place?.place_id}`
+            }
+          />
+          <p>Scan the QR code to open in google maps</p>
+        </div>
+      </CustomModal>
       {isFolded ? (
         <div className="absolute inset-y-0 bottom-0 right-0 flex transform flex-col gap-4 divide-y overflow-y-scroll bg-zinc-100 p-4 text-slate-700 duration-100 data-[fold=false]:w-4/12 data-[fold=true]:w-[300px] dark:bg-zinc-900 dark:text-slate-300">
           <div className="flex h-full w-full flex-col gap-4">
@@ -162,19 +178,18 @@ const MapSideBar = ({
             <Rating value={place?.rating} fractions={2} readOnly />
             <p>{place?.vicinity}</p>
             <p>Distance: {routes[0]?.legs[0]?.distance?.text}</p>
-            <p>
-              Miles:{" "}
-              {(routes[0]!.legs[0]!.distance!.value / 1000 / 1.609).toFixed(2)}
-            </p>
 
             <button
               className="flex justify-self-end last:mt-auto"
               onClick={() => {
+                open();
+                setHasClicked(true);
                 mutateAddOffsetFootprint({
                   travelType: preferredTravelType.preferred_travel_type!,
-                  miles: routes[0]!.legs[0]!.distance!.value / 1000 / 1.609,
+                  miles: routes[0]!.legs[0]!.distance!.value,
                 });
               }}
+              disabled={hasClicked}
             >
               Choose Route
             </button>
@@ -202,6 +217,7 @@ const MapSideBar = ({
                           "," +
                           value.geometry!.location!.lng(),
                         travelMode: travelMode.current!,
+                        unitSystem: google.maps.UnitSystem.IMPERIAL,
                       })
                       .then((result) => {
                         console.log(result);
