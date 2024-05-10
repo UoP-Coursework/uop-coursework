@@ -233,6 +233,8 @@ export const userRouter = createTRPCRouter({
     return ctx.db.user.findMany({
       select: {
         username: true,
+        name: true,
+        image: true,
         carbon_offset: true,
         carbon_footprint: true,
       },

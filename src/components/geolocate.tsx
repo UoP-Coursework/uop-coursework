@@ -163,13 +163,13 @@ const MapSideBar = ({
         </div>
       </CustomModal>
       {isFolded ? (
-        <div className="absolute inset-y-0 bottom-0 right-0 flex transform flex-col gap-4 divide-y overflow-y-scroll bg-zinc-100 p-4 text-slate-700 duration-100 data-[fold=false]:w-4/12 data-[fold=true]:w-[300px] dark:bg-zinc-900 dark:text-slate-300">
+        <div className="absolute inset-y-0 bottom-0 right-0 flex transform flex-col gap-4 bg-zinc-100 p-4 text-slate-700 duration-100 data-[fold=false]:w-4/12 data-[fold=true]:w-[300px] dark:bg-zinc-900 dark:text-slate-300">
           <div className="flex h-full w-full flex-col gap-4">
             <button
               onClick={() => {
                 setIsFolded((prev) => !prev);
               }}
-              className="flex flex-row items-center gap-2"
+              className="flex flex-row items-center gap-2 rounded-lg bg-zinc-200 p-2 text-slate-700 dark:bg-zinc-600 dark:text-slate-300"
             >
               back
               <TbArrowBack />
@@ -180,7 +180,7 @@ const MapSideBar = ({
             <p>Distance: {routes[0]?.legs[0]?.distance?.text}</p>
 
             <button
-              className="flex justify-self-end last:mt-auto"
+              className="flex justify-self-end rounded-lg bg-zinc-200 p-2 text-slate-700 last:mt-auto disabled:opacity-50 dark:bg-zinc-600 dark:text-slate-300"
               onClick={() => {
                 open();
                 setHasClicked(true);
@@ -197,7 +197,7 @@ const MapSideBar = ({
         </div>
       ) : (
         <div
-          className="absolute inset-y-0 bottom-0 right-0 flex transform flex-col gap-4 divide-y overflow-y-scroll bg-zinc-100 p-4 text-slate-700 duration-100 data-[fold=false]:w-4/12 data-[fold=true]:w-[300px] dark:bg-zinc-900 dark:text-slate-300"
+          className="absolute inset-y-0 bottom-0 right-0 flex transform flex-col gap-4 divide-y overflow-y-scroll bg-zinc-100 p-4 text-slate-700 duration-100 data-[fold=false]:w-4/12 data-[fold=true]:w-[300px] dark:divide-slate-700 dark:bg-zinc-900 dark:text-slate-300"
           data-fold={isFolded}
         >
           {places.map((value, index) => (
@@ -207,7 +207,7 @@ const MapSideBar = ({
               <p>{value.vicinity}</p>
               <div className="flex flex-row gap-4">
                 <button
-                  className="text-slate-700 dark:text-slate-300"
+                  className="rounded-lg bg-zinc-200 p-2 text-slate-700 dark:bg-zinc-600 dark:text-slate-300"
                   onClick={() => {
                     directionsService!
                       .route({

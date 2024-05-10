@@ -18,15 +18,21 @@ export default function Home() {
           <h3 className="pb-4 text-center text-3xl font-bold leading-tight tracking-tight text-slate-700 dark:text-slate-300">
             Welcome, {data?.username}!
           </h3>
-          <div className="flex flex-col justify-center gap-4 text-center">
+          <div className="flex flex-col items-center justify-center gap-4 text-center">
             <button
-              className="text-slate-700 dark:text-slate-300"
+              className="w-fit rounded-lg bg-zinc-200 p-2 px-8 text-slate-700 dark:bg-zinc-600 dark:text-slate-300"
               onClick={() => router.push("/dashboard")}
             >
               Dashboard
             </button>
             <button
-              className="text-slate-700 dark:text-slate-300"
+              className="w-fit rounded-lg bg-zinc-200 p-2 px-8 text-slate-700 dark:bg-zinc-600 dark:text-slate-300"
+              onClick={() => router.push("/faq")}
+            >
+              Leaderboard
+            </button>
+            <button
+              className="w-fit rounded-lg bg-zinc-200 p-2 px-8 text-slate-700 dark:bg-zinc-600 dark:text-slate-300"
               onClick={() => router.push("/faq")}
             >
               Frequently Asked Questions
